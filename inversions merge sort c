@@ -1,0 +1,92 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+template <typename T>
+long long mergeSort(T* arr, int size)
+{
+  int m;
+
+    if (size <= 1)
+        return 0;
+
+    m = size / 2;
+
+    long long invCountLeft = 0, invCountRight = 0, invCountC = 0;
+    invCountLeft = mergeSort(arr, m);
+    invCountRight = mergeSort(arr + m, size - m);
+
+    T* arrPartLeft = new T[m];
+    T* arrPartRight = new T[size - m];
+
+    memcpy(arrPartLeft, arr, sizeof(T) * m);
+    memcpy(arrPartRight, arr + m, sizeof(T) * (size - m));
+
+    int i = 0, j = 0, k = 0;
+
+    while (k < size)
+    {
+        if (arrPartLeft[i] < arrPartRight[j])
+        {
+            arr[k] = arrPartLeft[i];
+            i++;
+
+            invCountC += j;
+        }
+        else
+        {
+            arr[k] = arrPartRight[j];
+            j++;
+
+            invCountC += 1;
+        }
+
+        k++;
+
+        if (i >= m || j >= (size - m))
+            break;
+    }
+
+    invCountC -= j;
+
+    while (i < m)
+    {
+        arr[k] = arrPartLeft[i];
+        k++;
+        i++;
+
+        invCountC += j;
+    }
+    while (j < (size - m))
+    {
+        arr[k] = arrPartRight[j];
+        k++;
+        j++;
+    }
+
+    delete []arrPartLeft;
+    delete []arrPartRight;
+    
+    return (invCountLeft + invCountRight + invCountC);
+}
+
+int main()
+{
+    //int array[] = {4, 2, 1, 3, 5, 8, 0, 43, 10};
+    int n;
+    
+    scanf("%d", &n);
+    int array[n];
+
+
+    for (int i = 0; i < n; ++i)
+    {
+        scanf("%d", &array[i]);
+    }
+
+    long long invCount = mergeSort(array, sizeof(array) / sizeof(array[0]));
+
+    printf("%lld", invCount);
+
+    return 0;
+}
