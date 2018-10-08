@@ -1,0 +1,9 @@
+N=int(raw_input().strip())
+arreglo = [int(s) for s in raw_input().strip().split()]
+
+contador = 0;
+for i in range(0,len(arreglo)):
+    for j in range(i,len(arreglo)):
+        if arreglo[i] > arreglo[j]:
+            contador = contador + 1
+print contador
